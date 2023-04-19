@@ -24,13 +24,13 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         """Check hashed password."""
         return check_password_hash(self.password, password)
-    class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username =  db.Column(db.String, nullable=False, unique=True)
-    phoneNumber= db.Column(db.Integer,nullable=True,unique=True)
-    email=db.Column(db.String,nullable=False,unique=True)
-    password = db.Column(db.String(120), nullable=False)
-    workoutLevel= db.Column(db.String(120), nullable=True)
+    class eUser(db.Model, UserMixin):
+        id = db.Column(db.Integer, primary_key=True)
+        username =  db.Column(db.String, nullable=False, unique=True)
+        phoneNumber= db.Column(db.Integer,nullable=True,unique=True)
+        email=db.Column(db.String,nullable=False,unique=True)
+        password = db.Column(db.String(120), nullable=False)
+        workoutLevel= db.Column(db.String(120), nullable=True)
 
     def __init__(self, username, password,phoneNumber,email,workoutLevel):
         self.username = username
@@ -58,34 +58,33 @@ class User(db.Model, UserMixin):
         user.username=username
         user.phoneNumber=data["phoneNumber"]
         user.email=data["email"]
-        return message="Edit Successful"
+        return None
         
     def editphoneNumber(self, userID,phoneNumber):
         user=User.query.get(userID)
         user.username=username
         user.phoneNumber=phoneNumber
         user.email=data["email"]
-        return message="Edit Successful"
+        return None
 
     def editEmail(self, userID,email):
         user=User.query.get(userID)
         user.email=email
-        return message="Edit Successful"
+        return None
 
 
     def deleteAccount(self,userID):
         data=request.json()
-        User del_user=User.query.filter_by(userID=data["userID"])
+        del_user=User.query.filter_by(userID=data["userID"])
         db.session.delete(del_user)
         db.session.commit()
-      return True
-    return None
+        return True
 
     def signUP(self, username, password,phoneNumber,email,workoutLevel):
         user=User(username,password,phoneNumber,email,workoutLevel)
         db.session.add(user)
         db.session.commit()
-        return message="Successfully Added", 201
+        return True
 
 class Excercise(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
